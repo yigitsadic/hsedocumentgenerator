@@ -65,3 +65,8 @@ func (h *Handler) StoreOutputPath() {
 
 	h.ZipOutputPath = text
 }
+
+// Prints PDF generation process started text.
+func (h *Handler) PrintPDFGenerationStarted() {
+	fmt.Fprint(h.Output, pdfGenerationStartedText)
+}

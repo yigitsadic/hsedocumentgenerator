@@ -99,3 +99,15 @@ func TestHandler_StoreOutputPath(t *testing.T) {
 		t.Errorf("expected zip file path was=%q but got=%q", filePath, h.ZipOutputPath)
 	}
 }
+
+func TestHandler_PrintPDFGenerationStarted(t *testing.T) {
+	output := new(bytes.Buffer)
+
+	h := NewHandler(nil, output, nil)
+
+	h.PrintPDFGenerationStarted()
+
+	if !strings.Contains(output.String(), pdfGenerationStartedText) {
+		t.Errorf("expected output not satisfied. expected=%q but got=%q", pdfGenerationStartedText, output.String())
+	}
+}
