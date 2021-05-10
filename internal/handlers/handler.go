@@ -30,6 +30,7 @@ type Handler struct {
 
 	PDFGenerator pdf_generator.PDFGenerate
 
+	Files         []models.ReadFile
 	ZipOutputPath string
 }
 
@@ -75,7 +76,20 @@ func (h *Handler) StoreOutputPath() {
 	h.ZipOutputPath = strings.TrimSpace(text)
 }
 
+// Generates PDF and stores it.
 func (h *Handler) GeneratePDF(r models.Record) error {
+	req, err := h.PDFGenerator.BuildRequest(r)
+	if err != nil {
+		return err
+	}
+
+	result, err := h.PDFGenerator.Build(req)
+	if err != nil {
+		return err
+	}
+
+	h.Files = append(h.Files, models.ReadFile{FileName: fmt.Sprintf("%s.pdf", r.UniqueReference), Content: result})
+
 	return nil
 }
 

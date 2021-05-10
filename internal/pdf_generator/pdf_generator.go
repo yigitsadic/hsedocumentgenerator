@@ -9,11 +9,16 @@ import (
 
 type PDFGenerate interface {
 	Build(req *gotenberg.HTMLRequest) ([]byte, error)
-	BuildRequest(r models.Record, store *AssetStore) (*gotenberg.HTMLRequest, error)
+	BuildRequest(r models.Record) (*gotenberg.HTMLRequest, error)
 }
 
 type PDFGenerator struct {
 	Store *AssetStore
+}
+
+// Builds PDF and returns as bytes.
+func (g *PDFGenerator) Build(req *gotenberg.HTMLRequest) ([]byte, error) {
+	return nil, nil
 }
 
 // Builds request for gotenberg with given record.

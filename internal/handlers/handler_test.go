@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"github.com/thecodingmachine/gotenberg-go-client/v7"
 	"github.com/yigitsadic/hsedocumentgenerator/internal/models"
 	"reflect"
 	"strings"
@@ -17,6 +18,27 @@ type mockClient struct {
 
 func (m mockClient) ReadFromSheets() ([]models.Record, error) {
 	return m.Output, m.Error
+}
+
+type mockPDFGenerator struct {
+	BuildRequestError error
+	BuildError        error
+}
+
+func (m mockPDFGenerator) Build(req *gotenberg.HTMLRequest) ([]byte, error) {
+	if m.BuildError != nil {
+		return nil, m.BuildError
+	}
+
+	return []byte("a"), nil
+}
+
+func (m mockPDFGenerator) BuildRequest(r models.Record) (*gotenberg.HTMLRequest, error) {
+	if m.BuildRequestError != nil {
+		return nil, m.BuildRequestError
+	}
+
+	return nil, nil
 }
 
 func TestHandler_WriteToConsole(t *testing.T) {
@@ -113,4 +135,67 @@ func TestHandler_StoreOutputPath(t *testing.T) {
 	if h.ZipOutputPath != filePath {
 		t.Errorf("expected zip file path was=%q but got=%q", filePath, h.ZipOutputPath)
 	}
+}
+
+func TestHandler_GeneratePDF(t *testing.T) {
+	t.Run("it should handle build request error gracefully", func(t *testing.T) {
+		expectedError := errors.New("basic error")
+
+		h := Handler{}
+		h.PDFGenerator = mockPDFGenerator{BuildRequestError: expectedError}
+		h.Files = []models.ReadFile{}
+		r := models.Record{UniqueReference: "LOREM"}
+
+		err := h.GeneratePDF(r)
+
+		if err != expectedError {
+			t.Errorf("expected error was %s but got=%s", expectedError, err)
+		}
+
+		if len(h.Files) != 0 {
+			t.Errorf("unexpected to file written into files")
+		}
+	})
+
+	t.Run("it should handle build error gracefully", func(t *testing.T) {
+		expectedError := errors.New("basic error")
+
+		h := Handler{}
+		h.PDFGenerator = mockPDFGenerator{BuildError: expectedError}
+		h.Files = []models.ReadFile{}
+		r := models.Record{UniqueReference: "LOREM"}
+
+		err := h.GeneratePDF(r)
+
+		if err != expectedError {
+			t.Errorf("expected error was %s but got=%s", expectedError, err)
+		}
+
+		if len(h.Files) != 0 {
+			t.Errorf("unexpected to file written into files")
+		}
+	})
+
+	t.Run("it should write to files successfully", func(t *testing.T) {
+		h := Handler{}
+		h.PDFGenerator = mockPDFGenerator{}
+		h.Files = []models.ReadFile{}
+		r := models.Record{UniqueReference: "LOREM"}
+
+		err := h.GeneratePDF(r)
+
+		if err != nil {
+			t.Errorf("unexpected to get an error but got=%s", err)
+		}
+
+		if len(h.Files) != 1 {
+			t.Errorf("expected to file written into files")
+		}
+
+		expectedFileName := fmt.Sprintf("%s.pdf", r.UniqueReference)
+
+		if h.Files[0].FileName != expectedFileName {
+			t.Errorf("expected file name was=%s but got=%s", expectedFileName, h.Files[0].FileName)
+		}
+	})
 }
