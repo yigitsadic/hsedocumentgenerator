@@ -26,6 +26,7 @@ const (
 	noRecordFoundText                  = "\U0001F97A\tGoogle Sheets üzerinde kayıt bulunamadı. Yapacak bir şey yok.\n"
 	errorOccurredDuringPDFCreationText = "😥\t[%s.pdf] %s %s için beklenmedik bir hata oluştu.\n"
 	noFileToCompressText               = "🙈\tSıkıştırılacak PDF bulunamadı.\n"
+	unableToWriteSheetsText            = "\U0001F975\tGoogle Sheets'e yazma başarısız. Hata: %q.\n"
 )
 
 type Handler struct {
@@ -141,6 +142,10 @@ func (h *Handler) WriteFilesToZip() error {
 	return nil
 }
 
+func (h *Handler) WriteToSheets(input []models.Record) error {
+	return h.Client.WriteToSheets(input)
+}
+
 // Handles all work flow.
 func (h *Handler) Do() {
 	h.Write(welcomeText)
@@ -167,6 +172,11 @@ func (h *Handler) Do() {
 		return
 	} else {
 		h.WriteFilesToZip()
+	}
+
+	err := h.WriteToSheets(h.ReadRecords)
+	if err != nil {
+		h.Write(unableToWriteSheetsText, err)
 	}
 
 	h.Write(processSucceededText)
