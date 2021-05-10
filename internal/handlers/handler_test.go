@@ -16,6 +16,10 @@ type mockClient struct {
 	Error  error
 }
 
+func (m mockClient) WriteToSheets(records []models.Record) error {
+	return nil
+}
+
 func (m mockClient) ReadFromSheets() ([]models.Record, error) {
 	return m.Output, m.Error
 }

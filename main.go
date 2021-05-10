@@ -45,6 +45,10 @@ func (m mockGoogleClient) ReadFromSheets() ([]models.Record, error) {
 	}, nil
 }
 
+func (m mockGoogleClient) WriteToSheets([]models.Record) error {
+	return nil
+}
+
 func main() {
 	gotenbergUrl := os.Getenv("GOTENBERG_URL")
 	if gotenbergUrl == "" {
