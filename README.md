@@ -1,4 +1,4 @@
-# HSE Group için PDF Belgesi Üreten CLI
+# HSE Group için PDF Belgesi Üretici
 
 Google Sheet üzerinden verileri okuyup çıktı olarak PDF belgelerini ve eklenecek
 kayıtları CSV olarak oluşturan komut satırı uygulaması.
