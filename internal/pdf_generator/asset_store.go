@@ -3,7 +3,7 @@ package pdf_generator
 import (
 	"html/template"
 	"io"
-	"os"
+	"net/http"
 )
 
 type AssetStore struct {
@@ -16,11 +16,11 @@ type AssetStore struct {
 }
 
 // Reads all required files and stores them as bytes.
-func NewStore() *AssetStore {
+func NewStore(statikFS http.FileSystem) *AssetStore {
 	s := AssetStore{}
 
 	// Open and read state logo
-	f1, err := os.Open("./assets/1920px-Emblem_of_Uzbekistan.svg.png")
+	f1, err := statikFS.Open("/1920px-Emblem_of_Uzbekistan.svg.png")
 	if err != nil {
 		panic("Cannot open 1920px-Emblem_of_Uzbekistan.svg.png")
 	}
@@ -34,7 +34,7 @@ func NewStore() *AssetStore {
 	s.StateLogo = stateLogo
 
 	// Open and read background image
-	f2, err := os.Open("./assets/bg.jpg")
+	f2, err := statikFS.Open("/bg.jpg")
 	if err != nil {
 		panic("Cannot open bg.jpg")
 	}
@@ -48,7 +48,7 @@ func NewStore() *AssetStore {
 	s.Background = backgroundImage
 
 	// Open and read HSE Logo
-	f3, err := os.Open("./assets/hse_logo.png")
+	f3, err := statikFS.Open("/hse_logo.png")
 	if err != nil {
 		panic("Cannot open hse_logo.png")
 	}
@@ -62,7 +62,7 @@ func NewStore() *AssetStore {
 	s.HseLogo = hseLogo
 
 	// Open and read company signature image
-	f4, err := os.Open("./assets/kase.png")
+	f4, err := statikFS.Open("/kase.png")
 	if err != nil {
 		panic("Cannot open kase.png")
 	}
@@ -76,7 +76,7 @@ func NewStore() *AssetStore {
 	s.CompanySignature = companySignature
 
 	// Open and read CSS file
-	f5, err := os.Open("./assets/styles.css")
+	f5, err := statikFS.Open("/styles.css")
 	if err != nil {
 		panic("Cannot open styles.css")
 	}
@@ -90,9 +90,20 @@ func NewStore() *AssetStore {
 	s.Styles = styles
 
 	// Open and read HTML -> PDF template file
-	t, err := template.ParseFiles("./assets/certificate_template.html")
+	f6, err := statikFS.Open("/certificate_template.html")
 	if err != nil {
 		panic("Cannot open certificate_template.html")
+	}
+	readBytes, err := io.ReadAll(f6)
+	f6.Close()
+
+	if err != nil {
+		panic("cannot read certificate_template.html")
+	}
+
+	t, err := template.New("certificate_template.html").Parse(string(readBytes))
+	if err != nil {
+		panic("cannot read certificate_template.html")
 	}
 
 	s.Template = t
