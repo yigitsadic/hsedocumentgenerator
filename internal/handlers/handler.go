@@ -17,7 +17,7 @@ const (
 	cannotReadFromGoogleText = "😥\tGoogle Sheets üzerinden kayıtlar okunamadı.\n"
 	outputZIPText            = "🤔\tOluşturulan PDFleri içeren ZIP dosyası nereye depolanacak?:\t"
 	pdfGenerationStartedText = "⏳\tPDF belge üretme işlemi başlandı...\n"
-	pdfGeneratedText         = "👍\t[%d/%d]\tPDF belgesi üretildi.\n"
+	pdfGeneratedText         = "👍\t [%s.pdf] %s %s için PDF belgesi üretildi.\n"
 	zipFileCreatedText       = "✅\tPDF belgeleri %q olarak sıkıştırıldı ve okunan kayıtlar Google Sheets içine eklendi.\n"
 	processSucceededText     = "💫\tİşlem tamamlandı. İyi günler!\n"
 )
@@ -90,6 +90,7 @@ func (h *Handler) GeneratePDF(r models.Record) error {
 
 	h.Files = append(h.Files, models.ReadFile{FileName: fmt.Sprintf("%s.pdf", r.UniqueReference), Content: result})
 
+	h.Write(pdfGeneratedText, r.UniqueReference, r.FirstName, r.LastName)
 	return nil
 }
 
@@ -101,7 +102,7 @@ func (h *Handler) Do() {
 	h.Write(pdfGenerationStartedText)
 
 	for x := 1; x <= 10; x++ {
-		h.Write(pdfGeneratedText, x, 10)
+		h.Write(pdfGeneratedText, "abcdef", "yigit", "sadic")
 		time.Sleep(1 * time.Second)
 	}
 

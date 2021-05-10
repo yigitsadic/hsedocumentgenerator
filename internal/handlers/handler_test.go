@@ -177,10 +177,12 @@ func TestHandler_GeneratePDF(t *testing.T) {
 	})
 
 	t.Run("it should write to files successfully", func(t *testing.T) {
-		h := Handler{}
+		o := new(bytes.Buffer)
+
+		h := Handler{Output: o}
 		h.PDFGenerator = mockPDFGenerator{}
 		h.Files = []models.ReadFile{}
-		r := models.Record{UniqueReference: "LOREM"}
+		r := models.Record{UniqueReference: "LOREM", FirstName: "Lorem", LastName: "Ipsum"}
 
 		err := h.GeneratePDF(r)
 
@@ -196,6 +198,12 @@ func TestHandler_GeneratePDF(t *testing.T) {
 
 		if h.Files[0].FileName != expectedFileName {
 			t.Errorf("expected file name was=%s but got=%s", expectedFileName, h.Files[0].FileName)
+		}
+
+		expectedText := fmt.Sprintf(pdfGeneratedText, r.UniqueReference, r.FirstName, r.LastName)
+
+		if !strings.Contains(o.String(), expectedText) {
+			t.Errorf("expected output not satisfied. expected=%q but got=%q", expectedText, o.String())
 		}
 	})
 }
