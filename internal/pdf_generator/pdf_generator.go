@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/thecodingmachine/gotenberg-go-client/v7"
 	"github.com/yigitsadic/hsedocumentgenerator/internal/models"
+	"io"
 )
 
 type PDFGenerate interface {
@@ -13,12 +14,23 @@ type PDFGenerate interface {
 }
 
 type PDFGenerator struct {
-	Store *AssetStore
+	Store           *AssetStore
+	GotenbergClient gotenberg.Client
 }
 
 // Builds PDF and returns as bytes.
 func (g *PDFGenerator) Build(req *gotenberg.HTMLRequest) ([]byte, error) {
-	return nil, nil
+	res, err := g.GotenbergClient.Post(req)
+	if err != nil {
+		return nil, err
+	}
+
+	all, err := io.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return all, nil
 }
 
 // Builds request for gotenberg with given record.

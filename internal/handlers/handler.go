@@ -132,7 +132,7 @@ func (h *Handler) WriteFilesToZip() error {
 		return err
 	}
 
-	err = h.ZipWriter.WriteAsZip(buf.Bytes())
+	err = h.ZipWriter.WriteAsZip(h.ZipOutputPath, buf.Bytes())
 	if err != nil {
 		return err
 	}

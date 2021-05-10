@@ -45,7 +45,7 @@ type mockFileZipper struct {
 	Error error
 }
 
-func (m mockFileZipper) WriteAsZip(i []byte) error {
+func (m mockFileZipper) WriteAsZip(s string, i []byte) error {
 	if m.Error != nil {
 		return m.Error
 	}
