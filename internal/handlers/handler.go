@@ -20,7 +20,7 @@ const (
 	cannotReadFromGoogleText           = "😥\tGoogle Sheets üzerinden kayıtlar okunamadı.\n"
 	outputZIPText                      = "🤔\tOluşturulan PDFleri içeren ZIP dosyası nereye depolanacak?:\t"
 	pdfGenerationStartedText           = "⏳\tPDF belge üretme işlemi başlandı...\n"
-	pdfGeneratedText                   = "👍\t[%s.pdf] %s %s için PDF belgesi üretildi.\n"
+	pdfGeneratedText                   = "👍\t[%s.pdf]\t%s\t%s\tiçin PDF belgesi üretildi.\n"
 	zipFileCreatedText                 = "✅\tPDF belgeleri %q olarak sıkıştırıldı ve okunan kayıtlar Google Sheets içine eklendi.\n"
 	processSucceededText               = "💫\tİşlem tamamlandı. İyi günler!\n"
 	noRecordFoundText                  = "\U0001F97A\tGoogle Sheets üzerinde kayıt bulunamadı. Yapacak bir şey yok.\n"
