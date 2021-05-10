@@ -306,7 +306,6 @@ func TestHandler_Do(t *testing.T) {
 		i.WriteString("example.csv\n")
 		h.Do()
 
-		fmt.Println(o.String())
 		if !strings.Contains(o.String(), expectedOutput) {
 			t.Errorf("expected output not satisfied")
 		}
