@@ -14,7 +14,7 @@ const (
 	documentId   = "1fCSvCMXHDrT99ytqY6xZSgk_Wu__NCTNewzZ8rTvW_c"
 	pageId       = "Sertifika Yaratıcı"
 	dbPageId     = "Sertifika Veritabanı"
-	credFileName = "evermarry-5dc65980f79f.json"
+	credFileName = "credentials.json"
 	pageRange    = "A:G"
 )
 
