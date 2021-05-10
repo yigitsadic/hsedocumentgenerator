@@ -1,0 +1,80 @@
+<html>
+<meta charset="utf-8" />
+
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    <link href="styles.css" rel="stylesheet" />
+</head>
+
+<body>
+<div class="main_section_border">
+    <div class="main_section">
+        <div class="state_logo_holder">
+            <img src="1920px-Emblem_of_Uzbekistan.svg.png" class="state_logo" />
+        </div>
+
+        <div class="header">
+            <div class="main_title">
+                <h1>Eğitim Katılım Belgesi</h1>
+            </div>
+        </div>
+
+        <div class="participant">
+            <div class="participant__values">
+          <span class="name">
+            {{ .LastName }} {{ .FirstName }}
+          </span>
+
+                <br />
+
+                <span class="name">
+            {{ .JobName }}
+          </span>
+            </div>
+
+            <br />
+
+            <div class="certificate_description">
+                <span class="certificate_description__emphasis">{{ .EducationDate }}</span>
+                tarihinde <span class="certificate_description__emphasis">"{{ .CompanyName }}"</span>&nbsp; işyerinin
+                gerçekleştirmiş
+                olduğu,
+                <span class="certificate_description__emphasis" style="text-decoration: underline;">
+            {{ .EducationHours }}
+          </span>
+                &nbsp;
+                <span class="certificate_description__emphasis">
+            '{{ .EducationName }}'
+          </span>&nbsp;
+                eğitimine katılarak ve sonrasında "Ölçme ve Değerlendirme Testi"nde başarılı olarak,
+                bu belgeyi almaya hak kazanmıştır.
+            </div>
+
+        </div>
+
+        <div class="footer_container">
+            <div class="qr_code_container">
+                <img src="qr_code.png" class="qr_code_image" />
+
+                <div class="qr_code_content">
+                    {{ .QRCode }}
+                </div>
+            </div>
+
+            <div class="separator">
+                <img src="hse_logo.png" class="hse_logo" />
+            </div>
+
+            <div class="signature_container">
+                <img src="kase.png" class="signature_image" />
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+
+</html>
