@@ -19,15 +19,30 @@ func (m mockClient) ReadFromSheets() ([]models.Record, error) {
 	return m.Output, m.Error
 }
 
-func TestHandler_PrintHelloText(t *testing.T) {
-	o := new(bytes.Buffer)
-	h := Handler{Output: o}
+func TestHandler_WriteToConsole(t *testing.T) {
+	t.Run("it should write hello text", func(t *testing.T) {
+		o := new(bytes.Buffer)
+		h := Handler{Output: o}
 
-	h.PrintHelloText()
+		h.Write(welcomeText)
 
-	if !strings.Contains(o.String(), welcomeText) {
-		t.Errorf("expected to see %q but got %q", welcomeText, o.String())
-	}
+		if !strings.Contains(o.String(), welcomeText) {
+			t.Errorf("expected to see %q but got %q", welcomeText, o.String())
+		}
+	})
+
+	t.Run("it should write with parameters", func(t *testing.T) {
+		o := new(bytes.Buffer)
+		h := Handler{Output: o}
+
+		h.Write(recordReadText, 1)
+
+		expected := fmt.Sprintf(recordReadText, 1)
+
+		if !strings.Contains(o.String(), expected) {
+			t.Errorf("expected output not satisfied. expected=%q but got=%q", expected, o.String())
+		}
+	})
 }
 
 func TestHandler_ReadFromSheets(t *testing.T) {
@@ -97,17 +112,5 @@ func TestHandler_StoreOutputPath(t *testing.T) {
 
 	if h.ZipOutputPath != filePath {
 		t.Errorf("expected zip file path was=%q but got=%q", filePath, h.ZipOutputPath)
-	}
-}
-
-func TestHandler_PrintPDFGenerationStarted(t *testing.T) {
-	output := new(bytes.Buffer)
-
-	h := NewHandler(nil, output, nil)
-
-	h.PrintPDFGenerationStarted()
-
-	if !strings.Contains(output.String(), pdfGenerationStartedText) {
-		t.Errorf("expected output not satisfied. expected=%q but got=%q", pdfGenerationStartedText, output.String())
 	}
 }

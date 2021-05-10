@@ -37,9 +37,13 @@ func NewHandler(input io.Reader, output io.Writer, client sheet_reader.SheetClie
 	}
 }
 
-// Greets user.
-func (h *Handler) PrintHelloText() {
-	fmt.Fprint(h.Output, welcomeText)
+// Writes to output source
+func (h *Handler) Write(text string, inputs ...interface{}) {
+	if len(inputs) == 0 {
+		fmt.Fprint(h.Output, text)
+	} else {
+		fmt.Fprintf(h.Output, text, inputs...)
+	}
 }
 
 // Reads from Google Sheet client and prints output
@@ -64,9 +68,4 @@ func (h *Handler) StoreOutputPath() {
 	text, _ := h.Reader.ReadString('\n')
 
 	h.ZipOutputPath = text
-}
-
-// Prints PDF generation process started text.
-func (h *Handler) PrintPDFGenerationStarted() {
-	fmt.Fprint(h.Output, pdfGenerationStartedText)
 }
