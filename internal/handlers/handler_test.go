@@ -225,8 +225,8 @@ func TestHandler_Do(t *testing.T) {
 		expectedOutput := `🚀	Google Sheets üzerinden okuma başlatıldı.
 📗	Google Sheets üzerinden 2 kayıt okundu.
 🤔	Oluşturulan PDFleri içeren ZIP dosyası nereye depolanacak?:	⏳	PDF belge üretme işlemi başlandı...
-👍	[abc.pdf] Lorem Ipsum için PDF belgesi üretildi.
-👍	[def.pdf] Ali Veli için PDF belgesi üretildi.
+👍	[abc.pdf]	Lorem	Ipsum	için PDF belgesi üretildi.
+👍	[def.pdf]	Ali	Veli	için PDF belgesi üretildi.
 ✅	PDF belgeleri "example.csv" olarak sıkıştırıldı ve okunan kayıtlar Google Sheets içine eklendi.
 💫	İşlem tamamlandı. İyi günler!
 `
