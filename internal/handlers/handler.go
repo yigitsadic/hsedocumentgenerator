@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/yigitsadic/hsedocumentgenerator/internal/models"
+	"github.com/yigitsadic/hsedocumentgenerator/internal/pdf_generator"
 	"github.com/yigitsadic/hsedocumentgenerator/internal/sheet_reader"
 	"io"
 	"strings"
@@ -26,6 +27,8 @@ type Handler struct {
 	Reader      *bufio.Reader
 	Client      sheet_reader.SheetClient
 	ReadRecords []models.Record
+
+	PDFGenerator pdf_generator.PDFGenerate
 
 	ZipOutputPath string
 }
@@ -70,6 +73,10 @@ func (h *Handler) StoreOutputPath() {
 	text, _ := h.Reader.ReadString('\n')
 
 	h.ZipOutputPath = strings.TrimSpace(text)
+}
+
+func (h *Handler) GeneratePDF(r models.Record) error {
+	return nil
 }
 
 func (h *Handler) Do() {
