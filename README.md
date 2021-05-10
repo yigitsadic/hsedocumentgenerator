@@ -10,7 +10,6 @@ kayıtları CSV olarak oluşturan komut satırı uygulaması.
 🚀 Google Sheets üzerinden okuma başlatıldı.
 📗 Google Sheets üzerinden 30 kayıt okundu.
 
-🤔 Eklenenler için çıktı dosyası ne olacak?: olusanlar.csv
 🤔 Oluşturulan PDFleri içeren ZIP dosyası nereye depolanacak?: belgeler.zip
 
 ⏳ PDF belge üretme işlemi başlandı...
@@ -19,8 +18,7 @@ kayıtları CSV olarak oluşturan komut satırı uygulaması.
 ...
 👍 [30/30] PDF belgesi üretildi.
 
-✅ PDF belgeleri "belgeler.zip" olarak sıkıştırıldı ve eklendi.
-✅ Eklenen kayıtlar "olusanlar.csv" olarak eklendi.
+✅ PDF belgeleri "belgeler.zip" olarak sıkıştırıldı ve Google Sheets içine eklendi.
 
 💫 İşlem tamamlandı. İyi günler!
 ```
