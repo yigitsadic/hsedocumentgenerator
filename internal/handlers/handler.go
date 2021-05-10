@@ -6,17 +6,19 @@ import (
 	"github.com/yigitsadic/hsedocumentgenerator/internal/models"
 	"github.com/yigitsadic/hsedocumentgenerator/internal/sheet_reader"
 	"io"
+	"strings"
+	"time"
 )
 
 const (
-	welcomeText              = "🚀 Google Sheets üzerinden okuma başlatıldı.\n"
-	recordReadText           = "📗 Google Sheets üzerinden %d kayıt okundu.\n"
-	cannotReadFromGoogleText = "😥 Google Sheets üzerinden kayıtlar okunamadı.\n"
-	outputZIPText            = "🤔 Oluşturulan PDFleri içeren ZIP dosyası nereye depolanacak?:"
-	pdfGenerationStartedText = "⏳ PDF belge üretme işlemi başlandı...\n"
-	pdfGeneratedText         = "👍 [%d/%d] PDF belgesi üretildi.\n"
-	zipFileCreatedText       = "✅ PDF belgeleri %q olarak sıkıştırıldı ve Google Sheets içine eklendi.\n"
-	processSucceededText     = "💫 İşlem tamamlandı. İyi günler!\n"
+	welcomeText              = "🚀\tGoogle Sheets üzerinden okuma başlatıldı.\n"
+	recordReadText           = "📗\tGoogle Sheets üzerinden %d kayıt okundu.\n"
+	cannotReadFromGoogleText = "😥\tGoogle Sheets üzerinden kayıtlar okunamadı.\n"
+	outputZIPText            = "🤔\tOluşturulan PDFleri içeren ZIP dosyası nereye depolanacak?:\t"
+	pdfGenerationStartedText = "⏳\tPDF belge üretme işlemi başlandı...\n"
+	pdfGeneratedText         = "👍\t[%d/%d]\tPDF belgesi üretildi.\n"
+	zipFileCreatedText       = "✅\tPDF belgeleri %q olarak sıkıştırıldı ve okunan kayıtlar Google Sheets içine eklendi.\n"
+	processSucceededText     = "💫\tİşlem tamamlandı. İyi günler!\n"
 )
 
 type Handler struct {
@@ -67,5 +69,22 @@ func (h *Handler) StoreOutputPath() {
 
 	text, _ := h.Reader.ReadString('\n')
 
-	h.ZipOutputPath = text
+	h.ZipOutputPath = strings.TrimSpace(text)
+}
+
+func (h *Handler) Do() {
+	h.Write(welcomeText)
+	h.Write(recordReadText, 10)
+	h.StoreOutputPath()
+
+	h.Write(pdfGenerationStartedText)
+
+	for x := 1; x <= 10; x++ {
+		h.Write(pdfGeneratedText, x, 10)
+		time.Sleep(1 * time.Second)
+	}
+
+	h.Write(zipFileCreatedText, h.ZipOutputPath)
+
+	h.Write(processSucceededText)
 }
