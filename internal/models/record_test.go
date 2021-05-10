@@ -39,3 +39,50 @@ func TestRecord_GenerateQRCode(t *testing.T) {
 		}
 	})
 }
+
+func TestRecord_FormatForSheets(t *testing.T) {
+	r := Record{
+		FirstName:       "Yigit",
+		LastName:        "Sadicis",
+		JobName:         "Youtuber",
+		CompanyName:     "Medya ve Toplum",
+		EducationDate:   "20.07.2022",
+		EducationName:   "Reklam ve YouTube",
+		EducationHours:  "96 saat",
+		UniqueReference: "ylq123-2eiQ",
+	}
+
+	got := r.FormatForSheets()
+
+	if v, ok := got[0].(string); !ok || v != r.FirstName {
+		t.Errorf("expected value not satisfied")
+	}
+
+	if v, ok := got[1].(string); !ok || v != r.LastName {
+		t.Errorf("expected value not satisfied")
+	}
+
+	if v, ok := got[2].(string); !ok || v != r.CompanyName {
+		t.Errorf("expected value not satisfied")
+	}
+
+	if v, ok := got[3].(string); !ok || v != r.JobName {
+		t.Errorf("expected value not satisfied")
+	}
+
+	if v, ok := got[4].(string); !ok || v != r.EducationName {
+		t.Errorf("expected value not satisfied")
+	}
+
+	if v, ok := got[5].(string); !ok || v != r.EducationHours {
+		t.Errorf("expected value not satisfied")
+	}
+
+	if v, ok := got[6].(string); !ok || v != r.EducationDate {
+		t.Errorf("expected value not satisfied")
+	}
+
+	if v, ok := got[7].(string); !ok || v != r.UniqueReference {
+		t.Errorf("expected value not satisfied")
+	}
+}
