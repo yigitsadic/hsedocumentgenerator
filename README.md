@@ -7,18 +7,19 @@ kayıtları CSV olarak oluşturan komut satırı uygulaması.
 ```
 ./hsedocumentgenerator
 
-🚀 Google Sheets üzerinden okuma başlatıldı.
-📗 Google Sheets üzerinden 30 kayıt okundu.
-
-🤔 Oluşturulan PDFleri içeren ZIP dosyası nereye depolanacak?: belgeler.zip
-
-⏳ PDF belge üretme işlemi başlandı...
-👍 [1/30] PDF belgesi üretildi.
-👍 [2/30] PDF belgesi üretildi.
-...
-👍 [30/30] PDF belgesi üretildi.
-
-✅ PDF belgeleri "belgeler.zip" olarak sıkıştırıldı ve Google Sheets içine eklendi.
-
-💫 İşlem tamamlandı. İyi günler!
+🚀      Google Sheets üzerinden okuma başlatıldı.
+📗      Google Sheets üzerinden 2 kayıt okundu.
+🤔      Oluşturulan PDFleri içeren ZIP dosyası nereye depolanacak?:     belgeler.zip
+⏳       PDF belge üretme işlemi başlandı...
+👍      [abE1Ec1-A.pdf] Yiğit   Sadıç   için PDF belgesi üretildi.
+👍      [FE234-qZ.pdf]  Aycan   Çotoy   için PDF belgesi üretildi.
+✅       PDF belgeleri "belgeler.zip" olarak sıkıştırıldı ve okunan kayıtlar Google Sheets içine eklendi.
+💫      İşlem tamamlandı. İyi günler!
 ```
+
+
+### Gerekenler
+
+ENV variables:
+
+- GOTENBERG_URL (default: http://localhost:3000)

@@ -23,6 +23,24 @@ func (m mockGoogleClient) ReadFromSheets() ([]models.Record, error) {
 			EducationName:   "Güvenli Sürüş",
 			EducationHours:  "22 saatlik",
 			UniqueReference: "abE1Ec1-A",
+		}, {
+			FirstName:       "Aycan",
+			LastName:        "Çotoy",
+			JobName:         "Ambülans Şoförü",
+			CompanyName:     "DAL Heavy",
+			EducationDate:   "21.05.2021",
+			EducationName:   "İleri Sürüş",
+			EducationHours:  "40 saatlik",
+			UniqueReference: "FE234-qZ",
+		}, {
+			FirstName:       "Ali",
+			LastName:        "Gürbüz",
+			JobName:         "Kamyon Şoförü",
+			CompanyName:     "DAL Heavy",
+			EducationDate:   "21.05.2021",
+			EducationName:   "Uzun Yol Sürüş",
+			EducationHours:  "25 saatlik",
+			UniqueReference: "AZ-123Oakej-1",
 		},
 	}, nil
 }
