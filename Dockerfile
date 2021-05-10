@@ -10,5 +10,4 @@ RUN CGO_ENABLED=0 go build -o ./a.out .
 FROM alpine
 
 COPY --from=compiler /src/app/a.out /server
-COPY --from=compiler /src/app/assets /assets
 ENTRYPOINT ["/server"]
