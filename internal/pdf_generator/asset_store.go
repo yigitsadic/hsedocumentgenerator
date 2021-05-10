@@ -1,4 +1,4 @@
-package asset_store
+package pdf_generator
 
 import (
 	"html/template"
