@@ -1,4 +1,4 @@
-package sheet_reader
+package sheet_handler
 
 import "github.com/yigitsadic/hsedocumentgenerator/internal/models"
 

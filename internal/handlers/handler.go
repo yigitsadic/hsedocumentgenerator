@@ -8,7 +8,7 @@ import (
 	"github.com/yigitsadic/hsedocumentgenerator/internal/compressor"
 	"github.com/yigitsadic/hsedocumentgenerator/internal/models"
 	"github.com/yigitsadic/hsedocumentgenerator/internal/pdf_generator"
-	"github.com/yigitsadic/hsedocumentgenerator/internal/sheet_reader"
+	"github.com/yigitsadic/hsedocumentgenerator/internal/sheet_handler"
 	"io"
 	"log"
 	"strings"
@@ -31,7 +31,7 @@ const (
 type Handler struct {
 	Output      io.Writer
 	Reader      *bufio.Reader
-	Client      sheet_reader.SheetClient
+	Client      sheet_handler.SheetClient
 	ReadRecords []models.Record
 
 	PDFGenerator pdf_generator.PDFGenerate
@@ -44,7 +44,7 @@ type Handler struct {
 
 func NewHandler(input io.Reader,
 	output io.Writer,
-	client sheet_reader.SheetClient,
+	client sheet_handler.SheetClient,
 	pdfGen pdf_generator.PDFGenerate,
 	zipper compressor.ZipWriter,
 ) *Handler {
