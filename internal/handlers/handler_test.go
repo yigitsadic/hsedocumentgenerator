@@ -41,6 +41,18 @@ func (m mockPDFGenerator) BuildRequest(r models.Record) (*gotenberg.HTMLRequest,
 	return nil, nil
 }
 
+type mockFileZipper struct {
+	Error error
+}
+
+func (m mockFileZipper) WriteAsZip(i []byte) error {
+	if m.Error != nil {
+		return m.Error
+	}
+
+	return nil
+}
+
 func TestHandler_WriteToConsole(t *testing.T) {
 	t.Run("it should write hello text", func(t *testing.T) {
 		o := new(bytes.Buffer)
@@ -123,7 +135,7 @@ func TestHandler_StoreOutputPath(t *testing.T) {
 	output := new(bytes.Buffer)
 	input := new(bytes.Buffer)
 
-	h := NewHandler(input, output, nil, nil)
+	h := NewHandler(input, output, nil, nil, nil)
 
 	input.WriteString(filePath)
 	h.StoreOutputPath()
@@ -235,7 +247,7 @@ func TestHandler_Do(t *testing.T) {
 			},
 		}
 
-		h := NewHandler(i, o, mockClient{Output: records}, mockPDFGenerator{})
+		h := NewHandler(i, o, mockClient{Output: records}, mockPDFGenerator{}, mockFileZipper{Error: nil})
 
 		i.WriteString("example.csv\n")
 
@@ -255,7 +267,7 @@ func TestHandler_Do(t *testing.T) {
 		o := new(bytes.Buffer)
 		i := new(bytes.Buffer)
 
-		h := NewHandler(i, o, mockClient{Output: nil}, mockPDFGenerator{})
+		h := NewHandler(i, o, mockClient{Output: nil}, mockPDFGenerator{}, nil)
 
 		i.WriteString("example.csv\n")
 
@@ -272,8 +284,7 @@ func TestHandler_Do(t *testing.T) {
 🤔	Oluşturulan PDFleri içeren ZIP dosyası nereye depolanacak?:	⏳	PDF belge üretme işlemi başlandı...
 😥	[abc.pdf] Lorem Ipsum için beklenmedik bir hata oluştu.
 😥	[def.pdf] Ali Veli için beklenmedik bir hata oluştu.
-✅	PDF belgeleri "example.csv" olarak sıkıştırıldı ve okunan kayıtlar Google Sheets içine eklendi.
-💫	İşlem tamamlandı. İyi günler!`
+🙈	Sıkıştırılacak PDF bulunamadı.`
 
 		expectedError := errors.New("hello expected error here")
 		o := new(bytes.Buffer)
@@ -291,10 +302,11 @@ func TestHandler_Do(t *testing.T) {
 			},
 		}
 
-		h := NewHandler(i, o, mockClient{Output: records}, mockPDFGenerator{BuildError: expectedError})
+		h := NewHandler(i, o, mockClient{Output: records}, mockPDFGenerator{BuildError: expectedError}, mockFileZipper{})
 		i.WriteString("example.csv\n")
 		h.Do()
 
+		fmt.Println(o.String())
 		if !strings.Contains(o.String(), expectedOutput) {
 			t.Errorf("expected output not satisfied")
 		}

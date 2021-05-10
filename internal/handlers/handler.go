@@ -1,12 +1,16 @@
 package handlers
 
 import (
+	"archive/zip"
 	"bufio"
+	"bytes"
 	"fmt"
+	"github.com/yigitsadic/hsedocumentgenerator/internal/compressor"
 	"github.com/yigitsadic/hsedocumentgenerator/internal/models"
 	"github.com/yigitsadic/hsedocumentgenerator/internal/pdf_generator"
 	"github.com/yigitsadic/hsedocumentgenerator/internal/sheet_reader"
 	"io"
+	"log"
 	"strings"
 )
 
@@ -21,6 +25,7 @@ const (
 	processSucceededText               = "💫\tİşlem tamamlandı. İyi günler!\n"
 	noRecordFoundText                  = "\U0001F97A\tGoogle Sheets üzerinde kayıt bulunamadı. Yapacak bir şey yok.\n"
 	errorOccurredDuringPDFCreationText = "😥\t[%s.pdf] %s %s için beklenmedik bir hata oluştu.\n"
+	noFileToCompressText               = "🙈\tSıkıştırılacak PDF bulunamadı.\n"
 )
 
 type Handler struct {
@@ -31,11 +36,18 @@ type Handler struct {
 
 	PDFGenerator pdf_generator.PDFGenerate
 
-	Files         []models.ReadFile
+	Files []models.ReadFile
+
+	ZipWriter     compressor.ZipWriter
 	ZipOutputPath string
 }
 
-func NewHandler(input io.Reader, output io.Writer, client sheet_reader.SheetClient, pdfGen pdf_generator.PDFGenerate) *Handler {
+func NewHandler(input io.Reader,
+	output io.Writer,
+	client sheet_reader.SheetClient,
+	pdfGen pdf_generator.PDFGenerate,
+	zipper compressor.ZipWriter,
+) *Handler {
 	return &Handler{
 		Output:       output,
 		Reader:       bufio.NewReader(input),
@@ -43,6 +55,7 @@ func NewHandler(input io.Reader, output io.Writer, client sheet_reader.SheetClie
 		ReadRecords:  []models.Record{},
 		Files:        []models.ReadFile{},
 		PDFGenerator: pdfGen,
+		ZipWriter:    zipper,
 	}
 }
 
@@ -97,6 +110,37 @@ func (h *Handler) GeneratePDF(r models.Record) error {
 	return nil
 }
 
+// Compresses PDF files and writes them as zip file.
+func (h *Handler) WriteFilesToZip() error {
+	buf := new(bytes.Buffer)
+
+	w := zip.NewWriter(buf)
+
+	for _, file := range h.Files {
+		f, err := w.Create(file.FileName)
+		if err != nil {
+			log.Println(err)
+		}
+		_, err = f.Write(file.Content)
+		if err != nil {
+			log.Println(err)
+		}
+	}
+
+	err := w.Close()
+	if err != nil {
+		return err
+	}
+
+	err = h.ZipWriter.WriteAsZip(buf.Bytes())
+	if err != nil {
+		return err
+	}
+
+	h.Write(zipFileCreatedText, h.ZipOutputPath)
+	return nil
+}
+
 // Handles all work flow.
 func (h *Handler) Do() {
 	h.Write(welcomeText)
@@ -118,7 +162,12 @@ func (h *Handler) Do() {
 		}
 	}
 
-	h.Write(zipFileCreatedText, h.ZipOutputPath)
+	if len(h.Files) == 0 {
+		h.Write(noFileToCompressText)
+		return
+	} else {
+		h.WriteFilesToZip()
+	}
 
 	h.Write(processSucceededText)
 }
