@@ -79,3 +79,23 @@ func TestHandler_ReadFromSheets(t *testing.T) {
 		}
 	})
 }
+
+func TestHandler_StoreOutputPath(t *testing.T) {
+	filePath := "myoutput.zip"
+
+	output := new(bytes.Buffer)
+	input := new(bytes.Buffer)
+
+	h := NewHandler(input, output, nil)
+
+	input.WriteString(filePath)
+	h.StoreOutputPath()
+
+	if !strings.Contains(output.String(), outputZIPText) {
+		t.Errorf("expected output not seen")
+	}
+
+	if h.ZipOutputPath != filePath {
+		t.Errorf("expected zip file path was=%q but got=%q", filePath, h.ZipOutputPath)
+	}
+}

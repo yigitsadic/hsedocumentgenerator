@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"bufio"
 	"fmt"
 	"github.com/yigitsadic/hsedocumentgenerator/internal/models"
 	"github.com/yigitsadic/hsedocumentgenerator/internal/sheet_reader"
@@ -20,10 +21,20 @@ const (
 
 type Handler struct {
 	Output      io.Writer
+	Reader      *bufio.Reader
 	Client      sheet_reader.SheetClient
 	ReadRecords []models.Record
 
 	ZipOutputPath string
+}
+
+func NewHandler(input io.Reader, output io.Writer, client sheet_reader.SheetClient) *Handler {
+	return &Handler{
+		Output:      output,
+		Reader:      bufio.NewReader(input),
+		Client:      client,
+		ReadRecords: []models.Record{},
+	}
 }
 
 // Greets user.
@@ -44,4 +55,13 @@ func (h *Handler) ReadFromSheets() error {
 
 	fmt.Fprintf(h.Output, fmt.Sprintf(recordReadText, len(h.ReadRecords)))
 	return nil
+}
+
+// Reads output path and stores it.
+func (h *Handler) StoreOutputPath() {
+	fmt.Fprint(h.Output, outputZIPText)
+
+	text, _ := h.Reader.ReadString('\n')
+
+	h.ZipOutputPath = text
 }
