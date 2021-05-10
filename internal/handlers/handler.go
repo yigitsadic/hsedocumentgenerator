@@ -8,18 +8,19 @@ import (
 	"github.com/yigitsadic/hsedocumentgenerator/internal/sheet_reader"
 	"io"
 	"strings"
-	"time"
 )
 
 const (
-	welcomeText              = "🚀\tGoogle Sheets üzerinden okuma başlatıldı.\n"
-	recordReadText           = "📗\tGoogle Sheets üzerinden %d kayıt okundu.\n"
-	cannotReadFromGoogleText = "😥\tGoogle Sheets üzerinden kayıtlar okunamadı.\n"
-	outputZIPText            = "🤔\tOluşturulan PDFleri içeren ZIP dosyası nereye depolanacak?:\t"
-	pdfGenerationStartedText = "⏳\tPDF belge üretme işlemi başlandı...\n"
-	pdfGeneratedText         = "👍\t [%s.pdf] %s %s için PDF belgesi üretildi.\n"
-	zipFileCreatedText       = "✅\tPDF belgeleri %q olarak sıkıştırıldı ve okunan kayıtlar Google Sheets içine eklendi.\n"
-	processSucceededText     = "💫\tİşlem tamamlandı. İyi günler!\n"
+	welcomeText                        = "🚀\tGoogle Sheets üzerinden okuma başlatıldı.\n"
+	recordReadText                     = "📗\tGoogle Sheets üzerinden %d kayıt okundu.\n"
+	cannotReadFromGoogleText           = "😥\tGoogle Sheets üzerinden kayıtlar okunamadı.\n"
+	outputZIPText                      = "🤔\tOluşturulan PDFleri içeren ZIP dosyası nereye depolanacak?:\t"
+	pdfGenerationStartedText           = "⏳\tPDF belge üretme işlemi başlandı...\n"
+	pdfGeneratedText                   = "👍\t[%s.pdf] %s %s için PDF belgesi üretildi.\n"
+	zipFileCreatedText                 = "✅\tPDF belgeleri %q olarak sıkıştırıldı ve okunan kayıtlar Google Sheets içine eklendi.\n"
+	processSucceededText               = "💫\tİşlem tamamlandı. İyi günler!\n"
+	noRecordFoundText                  = "\U0001F97A\tGoogle Sheets üzerinde kayıt bulunamadı. Yapacak bir şey yok.\n"
+	errorOccurredDuringPDFCreationText = "😥\t[%s.pdf] %s %s için beklenmedik bir hata oluştu.\n"
 )
 
 type Handler struct {
@@ -34,12 +35,14 @@ type Handler struct {
 	ZipOutputPath string
 }
 
-func NewHandler(input io.Reader, output io.Writer, client sheet_reader.SheetClient) *Handler {
+func NewHandler(input io.Reader, output io.Writer, client sheet_reader.SheetClient, pdfGen pdf_generator.PDFGenerate) *Handler {
 	return &Handler{
-		Output:      output,
-		Reader:      bufio.NewReader(input),
-		Client:      client,
-		ReadRecords: []models.Record{},
+		Output:       output,
+		Reader:       bufio.NewReader(input),
+		Client:       client,
+		ReadRecords:  []models.Record{},
+		Files:        []models.ReadFile{},
+		PDFGenerator: pdfGen,
 	}
 }
 
@@ -94,16 +97,25 @@ func (h *Handler) GeneratePDF(r models.Record) error {
 	return nil
 }
 
+// Handles all work flow.
 func (h *Handler) Do() {
 	h.Write(welcomeText)
-	h.Write(recordReadText, 10)
+	h.ReadFromSheets()
+
+	if len(h.ReadRecords) == 0 {
+		h.Write(noRecordFoundText)
+		return
+	}
+
 	h.StoreOutputPath()
 
 	h.Write(pdfGenerationStartedText)
 
-	for x := 1; x <= 10; x++ {
-		h.Write(pdfGeneratedText, "abcdef", "yigit", "sadic")
-		time.Sleep(1 * time.Second)
+	for _, record := range h.ReadRecords {
+		err := h.GeneratePDF(record)
+		if err != nil {
+			h.Write(errorOccurredDuringPDFCreationText, record.UniqueReference, record.FirstName, record.LastName)
+		}
 	}
 
 	h.Write(zipFileCreatedText, h.ZipOutputPath)

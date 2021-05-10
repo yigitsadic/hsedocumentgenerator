@@ -123,7 +123,7 @@ func TestHandler_StoreOutputPath(t *testing.T) {
 	output := new(bytes.Buffer)
 	input := new(bytes.Buffer)
 
-	h := NewHandler(input, output, nil)
+	h := NewHandler(input, output, nil, nil)
 
 	input.WriteString(filePath)
 	h.StoreOutputPath()
@@ -204,6 +204,99 @@ func TestHandler_GeneratePDF(t *testing.T) {
 
 		if !strings.Contains(o.String(), expectedText) {
 			t.Errorf("expected output not satisfied. expected=%q but got=%q", expectedText, o.String())
+		}
+	})
+}
+
+func TestHandler_Do(t *testing.T) {
+	t.Run("it should work as intented", func(t *testing.T) {
+		expectedOutput := `🚀	Google Sheets üzerinden okuma başlatıldı.
+📗	Google Sheets üzerinden 2 kayıt okundu.
+🤔	Oluşturulan PDFleri içeren ZIP dosyası nereye depolanacak?:	⏳	PDF belge üretme işlemi başlandı...
+👍	[abc.pdf] Lorem Ipsum için PDF belgesi üretildi.
+👍	[def.pdf] Ali Veli için PDF belgesi üretildi.
+✅	PDF belgeleri "example.csv" olarak sıkıştırıldı ve okunan kayıtlar Google Sheets içine eklendi.
+💫	İşlem tamamlandı. İyi günler!
+`
+
+		o := new(bytes.Buffer)
+		i := new(bytes.Buffer)
+
+		records := []models.Record{
+			{
+				FirstName:       "Lorem",
+				LastName:        "Ipsum",
+				UniqueReference: "abc",
+			},
+			{
+				FirstName:       "Ali",
+				LastName:        "Veli",
+				UniqueReference: "def",
+			},
+		}
+
+		h := NewHandler(i, o, mockClient{Output: records}, mockPDFGenerator{})
+
+		i.WriteString("example.csv\n")
+
+		h.Do()
+
+		if !strings.Contains(o.String(), expectedOutput) {
+			t.Errorf("expected output not satisfied")
+		}
+	})
+
+	t.Run("it should handle with no record found", func(t *testing.T) {
+		expectedOutput := `🚀	Google Sheets üzerinden okuma başlatıldı.
+📗	Google Sheets üzerinden 0 kayıt okundu.
+🥺	Google Sheets üzerinde kayıt bulunamadı. Yapacak bir şey yok.
+`
+
+		o := new(bytes.Buffer)
+		i := new(bytes.Buffer)
+
+		h := NewHandler(i, o, mockClient{Output: nil}, mockPDFGenerator{})
+
+		i.WriteString("example.csv\n")
+
+		h.Do()
+
+		if !strings.Contains(o.String(), expectedOutput) {
+			t.Errorf("expected output not satisfied")
+		}
+	})
+
+	t.Run("it should handle when error occurred", func(t *testing.T) {
+		expectedOutput := `🚀	Google Sheets üzerinden okuma başlatıldı.
+📗	Google Sheets üzerinden 2 kayıt okundu.
+🤔	Oluşturulan PDFleri içeren ZIP dosyası nereye depolanacak?:	⏳	PDF belge üretme işlemi başlandı...
+😥	[abc.pdf] Lorem Ipsum için beklenmedik bir hata oluştu.
+😥	[def.pdf] Ali Veli için beklenmedik bir hata oluştu.
+✅	PDF belgeleri "example.csv" olarak sıkıştırıldı ve okunan kayıtlar Google Sheets içine eklendi.
+💫	İşlem tamamlandı. İyi günler!`
+
+		expectedError := errors.New("hello expected error here")
+		o := new(bytes.Buffer)
+		i := new(bytes.Buffer)
+		records := []models.Record{
+			{
+				FirstName:       "Lorem",
+				LastName:        "Ipsum",
+				UniqueReference: "abc",
+			},
+			{
+				FirstName:       "Ali",
+				LastName:        "Veli",
+				UniqueReference: "def",
+			},
+		}
+
+		h := NewHandler(i, o, mockClient{Output: records}, mockPDFGenerator{BuildError: expectedError})
+		i.WriteString("example.csv\n")
+		h.Do()
+
+		if !strings.Contains(o.String(), expectedOutput) {
+			t.Errorf("expected output not satisfied")
 		}
 	})
 }
