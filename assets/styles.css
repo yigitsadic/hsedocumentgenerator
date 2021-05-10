@@ -99,6 +99,7 @@ h1 {
 .qr_code_content {
     text-align: center;
     text-decoration: dotted;
+    font-size: 0.75rem;
 }
 
 .main_title {
