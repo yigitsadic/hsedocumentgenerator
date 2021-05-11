@@ -2,20 +2,38 @@ package pdf_generator
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"github.com/thecodingmachine/gotenberg-go-client/v7"
 	"github.com/yigitsadic/hsedocumentgenerator/internal/models"
 	"io"
+	"net/http"
 )
 
 type PDFGenerate interface {
 	Build(req *gotenberg.HTMLRequest) ([]byte, error)
 	BuildRequest(r models.Record) (*gotenberg.HTMLRequest, error)
+	Ping() error
 }
 
 type PDFGenerator struct {
 	Store           *AssetStore
 	GotenbergClient gotenberg.Client
+}
+
+// Checks gotenberg is available
+func (g *PDFGenerator) Ping() error {
+	c := http.Client{}
+	resp, err := c.Get(fmt.Sprintf("%s/ping", g.GotenbergClient.Hostname))
+	if err != nil {
+		return err
+	}
+
+	if resp.StatusCode == 200 {
+		return nil
+	}
+
+	return errors.New("unable to connect gotenberg")
 }
 
 // Builds PDF and returns as bytes.

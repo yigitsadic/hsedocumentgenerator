@@ -32,6 +32,11 @@ func main() {
 		Store:           assetStore,
 		GotenbergClient: gotenberg.Client{Hostname: gotenbergUrl},
 	}
+
+	if err = pdfGen.Ping(); err != nil {
+		log.Fatal(err)
+	}
+
 	z := compressor.Zipper{}
 
 	programHandler := handlers.NewHandler(os.Stdin, os.Stdout, googleClient, pdfGen, z)
