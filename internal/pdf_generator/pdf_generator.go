@@ -8,6 +8,7 @@ import (
 	"github.com/yigitsadic/hsedocumentgenerator/internal/models"
 	"io"
 	"net/http"
+	"time"
 )
 
 type PDFGenerate interface {
@@ -23,7 +24,7 @@ type PDFGenerator struct {
 
 // Checks gotenberg is available
 func (g *PDFGenerator) Ping() error {
-	c := http.Client{}
+	c := http.Client{Timeout: 3 * time.Second}
 	resp, err := c.Get(fmt.Sprintf("%s/ping", g.GotenbergClient.Hostname))
 	if err != nil {
 		return err
