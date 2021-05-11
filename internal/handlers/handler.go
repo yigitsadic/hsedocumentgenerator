@@ -70,20 +70,20 @@ func (h *Handler) Write(text string, inputs ...interface{}) {
 func (h *Handler) ReadFromSheets() error {
 	result, err := h.Client.ReadFromSheets()
 	if err != nil {
-		fmt.Fprint(h.Output, cannotReadFromGoogleText)
+		h.Write(cannotReadFromGoogleText)
 
 		return err
 	}
 
 	h.ReadRecords = result
 
-	fmt.Fprintf(h.Output, fmt.Sprintf(recordReadText, len(h.ReadRecords)))
+	h.Write(recordReadText, len(h.ReadRecords))
 	return nil
 }
 
 // Reads output path and stores it.
 func (h *Handler) StoreOutputPath() {
-	fmt.Fprint(h.Output, outputZIPText)
+	h.Write(outputZIPText)
 
 	text, _ := h.Reader.ReadString('\n')
 
