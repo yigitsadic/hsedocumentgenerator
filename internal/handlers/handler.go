@@ -1,16 +1,13 @@
 package handlers
 
 import (
-	"archive/zip"
 	"bufio"
-	"bytes"
 	"fmt"
 	"github.com/yigitsadic/hsedocumentgenerator/internal/compressor"
 	"github.com/yigitsadic/hsedocumentgenerator/internal/models"
 	"github.com/yigitsadic/hsedocumentgenerator/internal/pdf_generator"
 	"github.com/yigitsadic/hsedocumentgenerator/internal/sheet_handler"
 	"io"
-	"log"
 	"strings"
 )
 
@@ -113,27 +110,7 @@ func (h *Handler) GeneratePDF(r models.Record) error {
 
 // Compresses PDF files and writes them as zip file.
 func (h *Handler) WriteFilesToZip() error {
-	buf := new(bytes.Buffer)
-
-	w := zip.NewWriter(buf)
-
-	for _, file := range h.Files {
-		f, err := w.Create(file.FileName)
-		if err != nil {
-			log.Println(err)
-		}
-		_, err = f.Write(file.Content)
-		if err != nil {
-			log.Println(err)
-		}
-	}
-
-	err := w.Close()
-	if err != nil {
-		return err
-	}
-
-	err = h.ZipWriter.WriteAsZip(h.ZipOutputPath, buf.Bytes())
+	err := h.ZipWriter.WriteAsZip(h.ZipOutputPath, h.Files)
 	if err != nil {
 		return err
 	}

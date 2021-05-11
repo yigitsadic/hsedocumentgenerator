@@ -49,7 +49,7 @@ type mockFileZipper struct {
 	Error error
 }
 
-func (m mockFileZipper) WriteAsZip(s string, i []byte) error {
+func (m mockFileZipper) WriteAsZip(fileName string, files []models.ReadFile) error {
 	if m.Error != nil {
 		return m.Error
 	}
@@ -220,6 +220,41 @@ func TestHandler_GeneratePDF(t *testing.T) {
 
 		if !strings.Contains(o.String(), expectedText) {
 			t.Errorf("expected output not satisfied. expected=%q but got=%q", expectedText, o.String())
+		}
+	})
+}
+
+func TestHandler_WriteFilesToZip(t *testing.T) {
+	t.Run("it should handle error gracefully", func(t *testing.T) {
+		o := new(bytes.Buffer)
+		expectedError := errors.New("hello I am an error")
+
+		h := Handler{Output: o, ZipOutputPath: "example.zip", ZipWriter: mockFileZipper{Error: expectedError}}
+
+		err := h.WriteFilesToZip()
+		if err != expectedError {
+			t.Errorf("expected error not satisfied. expected=%s but got=%s", expectedError, err)
+		}
+
+		if o.String() != "" {
+			t.Errorf("unexpected to see output but got=%q", o.String())
+		}
+	})
+
+	t.Run("it should work as intentend", func(t *testing.T) {
+		o := new(bytes.Buffer)
+
+		h := Handler{Output: o, ZipOutputPath: "example.zip", ZipWriter: mockFileZipper{Error: nil}}
+
+		err := h.WriteFilesToZip()
+		if err != nil {
+			t.Errorf("unexpected to see an error but got=%s", err)
+		}
+
+		expectedOutput := fmt.Sprintf(zipFileCreatedText, "example.zip")
+
+		if !strings.Contains(o.String(), expectedOutput) {
+			t.Errorf("expected output not satisfied")
 		}
 	})
 }
