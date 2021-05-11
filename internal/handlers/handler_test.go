@@ -29,6 +29,10 @@ type mockPDFGenerator struct {
 	BuildError        error
 }
 
+func (m mockPDFGenerator) Ping() error {
+	return nil
+}
+
 func (m mockPDFGenerator) Build(req *gotenberg.HTMLRequest) ([]byte, error) {
 	if m.BuildError != nil {
 		return nil, m.BuildError
