@@ -72,7 +72,7 @@ func (g *PDFGenerator) BuildRequest(r models.Record) (*gotenberg.HTMLRequest, er
 		return nil, err
 	}
 
-	img2, err := gotenberg.NewDocumentFromBytes("bg.jpg", g.Store.Background)
+	img2, err := gotenberg.NewDocumentFromBytes("background.jpg", g.Store.Background)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +82,7 @@ func (g *PDFGenerator) BuildRequest(r models.Record) (*gotenberg.HTMLRequest, er
 		return nil, err
 	}
 
-	img4, err := gotenberg.NewDocumentFromBytes("kase.png", g.Store.CompanySignature)
+	img4, err := gotenberg.NewDocumentFromBytes("sirketkase.jpg", g.Store.CompanySignature)
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +92,7 @@ func (g *PDFGenerator) BuildRequest(r models.Record) (*gotenberg.HTMLRequest, er
 		return nil, err
 	}
 
-	css, err := gotenberg.NewDocumentFromBytes("styles.css", g.Store.Styles)
+	css, err := gotenberg.NewDocumentFromBytes("style.css", g.Store.Styles)
 	if err != nil {
 		return nil, err
 	}

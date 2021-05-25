@@ -34,14 +34,14 @@ func NewStore(statikFS http.FileSystem) *AssetStore {
 	s.StateLogo = stateLogo
 
 	// Open and read background image
-	f2, err := statikFS.Open("/bg.jpg")
+	f2, err := statikFS.Open("/background.jpg")
 	if err != nil {
-		panic("Cannot open bg.jpg")
+		panic("Cannot open background.jpg")
 	}
 
 	backgroundImage, err := io.ReadAll(f2)
 	if err != nil {
-		panic("Cannot read bg.jpg")
+		panic("Cannot read background.jpg")
 	}
 	f2.Close()
 
@@ -62,48 +62,48 @@ func NewStore(statikFS http.FileSystem) *AssetStore {
 	s.HseLogo = hseLogo
 
 	// Open and read company signature image
-	f4, err := statikFS.Open("/kase.png")
+	f4, err := statikFS.Open("/sirketkase.jpg")
 	if err != nil {
-		panic("Cannot open kase.png")
+		panic("Cannot open sirketkase.jpg")
 	}
 
 	companySignature, err := io.ReadAll(f4)
 	if err != nil {
-		panic("Cannot read kase.png")
+		panic("Cannot read sirketkase.jpg")
 	}
 	f4.Close()
 
 	s.CompanySignature = companySignature
 
 	// Open and read CSS file
-	f5, err := statikFS.Open("/styles.css")
+	f5, err := statikFS.Open("/style.css")
 	if err != nil {
-		panic("Cannot open styles.css")
+		panic("Cannot open style.css")
 	}
 
 	styles, err := io.ReadAll(f5)
 	if err != nil {
-		panic("Cannot read styles.css")
+		panic("Cannot read style.css")
 	}
 	f5.Close()
 
 	s.Styles = styles
 
 	// Open and read HTML -> PDF template file
-	f6, err := statikFS.Open("/certificate_template.html")
+	f6, err := statikFS.Open("/template.html")
 	if err != nil {
-		panic("Cannot open certificate_template.html")
+		panic("Cannot open template.html")
 	}
 	readBytes, err := io.ReadAll(f6)
 	f6.Close()
 
 	if err != nil {
-		panic("cannot read certificate_template.html")
+		panic("cannot read template.html")
 	}
 
-	t, err := template.New("certificate_template.html").Parse(string(readBytes))
+	t, err := template.New("template.html").Parse(string(readBytes))
 	if err != nil {
-		panic("cannot read certificate_template.html")
+		panic("cannot read template.html")
 	}
 
 	s.Template = t

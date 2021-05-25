@@ -1,0 +1,119 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-s {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+h4 {
+
+    font-family: "YACgEYmuCJE 0", _fb_, auto;
+    font-size: 42.5764px;
+    line-height: 1.2;
+    letter-spacing: 0;
+    font-weight: 400;
+    font-style: normal;
+    color: rgb(112, 149, 40);
+    text-shadow: 1.5px 1.5px rgb(189, 189, 189);
+}
+
+h1 {
+    overflow-wrap: break-word;
+    font-family: "YACgEYmuCJE 0", _fb_, auto;
+    font-size: 65.3333px;
+    line-height: 1.2;
+    letter-spacing: 0;
+    font-weight: 400;
+    font-style: normal;
+    color: rgb(238, 130, 108);
+    text-shadow: 0px 0px 10px rgba(44, 44, 44, 0.205);
+}
+
+h3 {
+    margin-top: 20px;
+    text-align: center;
+    font-family: "YACgEYmuCJE 0", _fb_, auto;
+    font-size: 42.5764px;
+    line-height: 1.2;
+    letter-spacing: 0;
+    font-weight: 400;
+    font-style: normal;
+    color: rgb(115, 115, 115);
+    text-shadow: 1.5px 1.5px rgba(44, 44, 44, 0.336);
+}
+
+h5 {
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: "YACgEYmuCJE 0", _fb_, auto;
+    font-size: 40px;
+    line-height: 1em;
+    letter-spacing: 0em;
+    font-weight: 400;
+    font-style: normal;
+    color: rgb(238, 130, 108);
+}
+
+h6 {
+    text-shadow: rgba(0, 0, 0, 0.094) 0px 0.824999px 1.254px;
+    text-align: center;
+    font-family: "YACgEYmuCJE 0", _fb_, auto;
+    font-size: 26px;
+    line-height: 1.4em;
+    letter-spacing: 0.01em;
+    font-weight: 700;
+    font-style: normal;
+    color: rgb(115, 115, 115);
+}
+
+p {
+    text-align: center;
+    font-family: 'Rubik', sans-serif;
+    font-size: 22px;
+    line-height: 1.4em;
+    letter-spacing: 0.01em;
+    font-weight: 400;
+    font-style: normal;
+    color: rgb(33, 54, 101);
+    padding-bottom: 3rem;
+}
+
+body {
+    background: rgb(204, 204, 204);
+    font-family: 'Oswald', sans-serif;
+    text-align: center;
+}
+
+page {
+    background: white;
+    background-image: url("background.jpg");
+    background-size: contain;
+    display: block;
+    margin: 0 auto;
+    padding: 40px;
+}
+
+page[size="A4"][layout="landscape"] {
+    width: 29.7cm;
+    height: 20cm;
+}
+
+@media print {
+
+    body,
+    page {
+        margin: 0;
+        box-shadow: 0;
+    }
+}
