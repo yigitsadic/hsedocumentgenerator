@@ -29,6 +29,7 @@ type Record struct {
 	EducationName   string
 	EducationHours  string
 	UniqueReference string
+	Language        string
 }
 
 // Assigns unique nano id reference code to object.

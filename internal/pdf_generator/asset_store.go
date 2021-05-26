@@ -62,14 +62,14 @@ func NewStore(statikFS http.FileSystem) *AssetStore {
 	s.HseLogo = hseLogo
 
 	// Open and read company signature image
-	f4, err := statikFS.Open("/sirketkase.jpg")
+	f4, err := statikFS.Open("/sirketkase.png")
 	if err != nil {
-		panic("Cannot open sirketkase.jpg")
+		panic("Cannot open sirketkase.png")
 	}
 
 	companySignature, err := io.ReadAll(f4)
 	if err != nil {
-		panic("Cannot read sirketkase.jpg")
+		panic("Cannot read sirketkase.png")
 	}
 	f4.Close()
 

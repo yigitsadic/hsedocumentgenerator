@@ -82,7 +82,7 @@ func (g *PDFGenerator) BuildRequest(r models.Record) (*gotenberg.HTMLRequest, er
 		return nil, err
 	}
 
-	img4, err := gotenberg.NewDocumentFromBytes("sirketkase.jpg", g.Store.CompanySignature)
+	img4, err := gotenberg.NewDocumentFromBytes("sirketkase.png", g.Store.CompanySignature)
 	if err != nil {
 		return nil, err
 	}
