@@ -97,7 +97,6 @@ func TestHandler_ReadFromSheets(t *testing.T) {
 			{
 				FirstName:       "Ali",
 				LastName:        "Veli",
-				JobName:         "Vinç Operatörü",
 				CompanyName:     "Bir Şirket",
 				EducationDate:   "07.02.2012",
 				EducationName:   "Güvenli Sürüş",

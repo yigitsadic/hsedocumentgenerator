@@ -47,18 +47,16 @@ func (s SheetHandler) ReadFromSheets() ([]models.Record, error) {
 		firstName, ok1 := row[0].(string)
 		lastName, ok2 := row[1].(string)
 		company, ok3 := row[2].(string)
-		job, ok4 := row[3].(string)
-		educationName, ok5 := row[4].(string)
-		educationDuration, ok6 := row[5].(string)
-		educationDate, ok7 := row[6].(string)
-		lang, ok8 := row[7].(string)
+		educationName, ok4 := row[3].(string)
+		educationDuration, ok5 := row[4].(string)
+		educationDate, ok6 := row[5].(string)
+		lang, ok7 := row[6].(string)
 
-		if ok1 && ok2 && ok3 && ok4 && ok5 && ok6 && ok7 && ok8 {
+		if ok1 && ok2 && ok3 && ok4 && ok5 && ok6 && ok7 {
 			r := models.Record{
 				FirstName:      firstName,
 				LastName:       lastName,
 				CompanyName:    company,
-				JobName:        job,
 				EducationName:  educationName,
 				EducationHours: educationDuration,
 				EducationDate:  educationDate,

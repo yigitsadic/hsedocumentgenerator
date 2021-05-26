@@ -23,7 +23,6 @@ var (
 type Record struct {
 	FirstName       string
 	LastName        string
-	JobName         string
 	CompanyName     string
 	EducationDate   string
 	EducationName   string
@@ -48,7 +47,6 @@ func (r Record) FormatForSheets() []interface{} {
 		r.FirstName,
 		r.LastName,
 		r.CompanyName,
-		r.JobName,
 		r.EducationName,
 		r.EducationHours,
 		r.EducationDate,
