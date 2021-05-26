@@ -37,7 +37,7 @@ h1 {
     font-weight: 400;
     font-style: normal;
     color: rgb(238, 130, 108);
-    text-shadow: 0px 0px 10px rgba(44, 44, 44, 0.205);
+    /* text-shadow: 0px 0px 10px rgba(44, 44, 44, 0.205); */
 }
 
 h3 {
@@ -66,7 +66,7 @@ h5 {
 }
 
 h6 {
-    text-shadow: rgba(0, 0, 0, 0.094) 0px 0.824999px 1.254px;
+    /* text-shadow: rgba(0, 0, 0, 0.094) 0px 0.824999px 1.254px; */
     text-align: center;
     font-family: "YACgEYmuCJE 0", _fb_, auto;
     font-size: 26px;
