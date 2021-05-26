@@ -7,7 +7,8 @@
 .logo {
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
+    horiz-align: center;
 }
 
 .logo-s {
@@ -36,7 +37,8 @@ h1 {
     letter-spacing: 0;
     font-weight: 400;
     font-style: normal;
-    color: rgb(238, 130, 108);
+    /* color: rgb(238, 130, 108); */
+    color: rgb(147, 67, 50);
     /* text-shadow: 0px 0px 10px rgba(44, 44, 44, 0.205); */
 }
 
@@ -62,7 +64,8 @@ h5 {
     letter-spacing: 0em;
     font-weight: 400;
     font-style: normal;
-    color: rgb(238, 130, 108);
+    /* color: rgb(238, 130, 108); */
+    color: rgb(147, 67, 50);
 }
 
 h6 {
@@ -106,7 +109,11 @@ page {
 
 page[size="A4"][layout="landscape"] {
     width: 29.7cm;
-    height: 20cm;
+    height: 20.98cm;
+}
+
+.qr_code {
+    flex-direction: column;
 }
 
 @media print {
