@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/thecodingmachine/gotenberg-go-client/v7"
 	"github.com/yigitsadic/hsedocumentgenerator/internal/models"
+	"github.com/yigitsadic/hsedocumentgenerator/internal/translations"
 	"io"
 	"net/http"
 	"time"
@@ -55,7 +56,20 @@ func (g *PDFGenerator) Build(req *gotenberg.HTMLRequest) ([]byte, error) {
 // Builds request for gotenberg with given record.
 func (g *PDFGenerator) BuildRequest(r models.Record) (*gotenberg.HTMLRequest, error) {
 	htmlContent := new(bytes.Buffer)
-	g.Store.Template.Execute(htmlContent, r)
+
+	trans := translations.TranslateTo(r.EducationHours, r.EducationDate, r.Language)
+	t := TemplateDto{
+		StateName:        trans.StateName,
+		CertificateTitle: trans.Title,
+		CompanyName:      r.CompanyName,
+		FirstName:        r.FirstName,
+		LastName:         r.LastName,
+		EducationName:    r.EducationName,
+		Content:          trans.Content,
+		UniqueReference:  r.UniqueReference,
+	}
+
+	g.Store.Template.Execute(htmlContent, t)
 
 	qr, err := r.GenerateQRCode()
 	if err != nil {

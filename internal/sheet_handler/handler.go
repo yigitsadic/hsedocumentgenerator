@@ -15,7 +15,7 @@ const (
 	pageId       = "Sertifika Yaratıcı"
 	dbPageId     = "Sertifika Veritabanı"
 	credFileName = "credentials.json"
-	pageRange    = "A:G"
+	pageRange    = "A:H"
 )
 
 type SheetHandler struct {
@@ -51,8 +51,9 @@ func (s SheetHandler) ReadFromSheets() ([]models.Record, error) {
 		educationName, ok5 := row[4].(string)
 		educationDuration, ok6 := row[5].(string)
 		educationDate, ok7 := row[6].(string)
+		lang, ok8 := row[7].(string)
 
-		if ok1 && ok2 && ok3 && ok4 && ok5 && ok6 && ok7 {
+		if ok1 && ok2 && ok3 && ok4 && ok5 && ok6 && ok7 && ok8 {
 			r := models.Record{
 				FirstName:      firstName,
 				LastName:       lastName,
@@ -61,6 +62,7 @@ func (s SheetHandler) ReadFromSheets() ([]models.Record, error) {
 				EducationName:  educationName,
 				EducationHours: educationDuration,
 				EducationDate:  educationDate,
+				Language:       lang,
 			}
 			r.AssignUniqueReference()
 

@@ -24,16 +24,13 @@
     </div>
 
     <div class="content">
-        <h4>Республика Узбекистан</h4>
-        <h1>Cертификат</h1>
+        <h4>{{ .StateName }}</h4>
+        <h1>{{ .CertificateTitle }}</h1>
         <h3>{{ .CompanyName }}</h3>
         <h5>{{ .LastName }} {{ .FirstName }}</h5>
         <h6>{{ .EducationName }}</h6>
         <p>
-            Участник в {{ .EducationHours }} тренинге, проведенном
-            {{ .EducationDate }}, и по окончании тренинга он успешно сдал
-            «Тест по измерениям и оценке» и имел право на
-            получение этого сертификата.
+            {{ .Content }}
         </p>
     </div>
     <div class="logo-s">
