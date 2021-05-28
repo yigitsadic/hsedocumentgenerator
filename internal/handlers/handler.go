@@ -17,11 +17,11 @@ const (
 	cannotReadFromGoogleText           = "😥\tGoogle Sheets üzerinden kayıtlar okunamadı.\n"
 	outputZIPText                      = "🤔\tOluşturulan PDFleri içeren ZIP dosyası nereye depolanacak?:\t"
 	pdfGenerationStartedText           = "⏳\tPDF belge üretme işlemi başlandı...\n"
-	pdfGeneratedText                   = "👍\t[%s.pdf]\t%s\t%s\tiçin PDF belgesi üretildi.\n"
+	pdfGeneratedText                   = "👍\t[%s.pdf]\t%s\tiçin PDF belgesi üretildi.\n"
 	zipFileCreatedText                 = "✅\tPDF belgeleri %q olarak sıkıştırıldı ve okunan kayıtlar Google Sheets içine eklendi.\n"
 	processSucceededText               = "💫\tİşlem tamamlandı. İyi günler!\n"
 	noRecordFoundText                  = "\U0001F97A\tGoogle Sheets üzerinde kayıt bulunamadı. Yapacak bir şey yok.\n"
-	errorOccurredDuringPDFCreationText = "😥\t[%s.pdf] %s %s için beklenmedik bir hata oluştu.\n"
+	errorOccurredDuringPDFCreationText = "😥\t[%s.pdf] %s için beklenmedik bir hata oluştu.\n"
 	noFileToCompressText               = "🙈\tSıkıştırılacak PDF bulunamadı.\n"
 	unableToWriteSheetsText            = "\U0001F975\tGoogle Sheets'e yazma başarısız. Hata: %q.\n"
 )
@@ -104,7 +104,7 @@ func (h *Handler) GeneratePDF(r models.Record) error {
 
 	h.Files = append(h.Files, models.ReadFile{FileName: fmt.Sprintf("%s.pdf", r.UniqueReference), Content: result})
 
-	h.Write(pdfGeneratedText, r.UniqueReference, r.FirstName, r.LastName)
+	h.Write(pdfGeneratedText, r.UniqueReference, r.FullName)
 	return nil
 }
 
@@ -140,7 +140,7 @@ func (h *Handler) Do() {
 	for _, record := range h.ReadRecords {
 		err := h.GeneratePDF(record)
 		if err != nil {
-			h.Write(errorOccurredDuringPDFCreationText, record.UniqueReference, record.FirstName, record.LastName)
+			h.Write(errorOccurredDuringPDFCreationText, record.UniqueReference, record.FullName)
 		}
 	}
 

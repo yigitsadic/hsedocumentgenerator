@@ -9,11 +9,11 @@ const (
 
 	EnglishStateName        = "Republic of Uzbekistan"
 	EnglishCertificateTitle = "Certificate of Participation"
-	EnglishText             = "%s %s"
+	EnglishText             = "By participating in the %s-hour training dated %s and succeeding in the Assessment and Evaluation Test, he/she has been entitled to receive this certificate."
 
 	RussianStateName        = "Республика Узбекистан"
 	RussianCertificateTitle = "Cертификат"
-	RussianText             = "Участник в %s тренинге, проведенном %s, и по окончании тренинга он успешно сдал «Тест по измерениям и оценке» и имел право на получение этого сертификата."
+	RussianText             = "Участник в %s часовых тренинге, проведенном в %s, и по окончании тренинга он успешно сдал «Тест по измерениям и оценке» и имел право на получение этого сертификата."
 )
 
 type TranslatedContent struct {
@@ -34,7 +34,7 @@ func TranslateTo(educationHours, educationDate, lang string) TranslatedContent {
 		return TranslatedContent{
 			StateName: EnglishStateName,
 			Title:     EnglishCertificateTitle,
-			Content:   fmt.Sprintf(EnglishText, educationDate, educationHours),
+			Content:   fmt.Sprintf(EnglishText, educationHours, educationDate),
 		}
 	case "RU":
 		return TranslatedContent{

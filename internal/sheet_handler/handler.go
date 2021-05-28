@@ -15,7 +15,7 @@ const (
 	pageId       = "Sertifika Yaratıcı"
 	dbPageId     = "Sertifika Veritabanı"
 	credFileName = "credentials.json"
-	pageRange    = "A:H"
+	pageRange    = "A:F"
 )
 
 type SheetHandler struct {
@@ -40,22 +40,20 @@ func (s SheetHandler) ReadFromSheets() ([]models.Record, error) {
 	var results []models.Record
 
 	for _, row := range resp.Values[1:] {
-		if len(row) < 7 {
+		if len(row) < 6 {
 			continue
 		}
 
-		firstName, ok1 := row[0].(string)
-		lastName, ok2 := row[1].(string)
-		company, ok3 := row[2].(string)
-		educationName, ok4 := row[3].(string)
-		educationDuration, ok5 := row[4].(string)
-		educationDate, ok6 := row[5].(string)
-		lang, ok7 := row[6].(string)
+		fullName, ok1 := row[0].(string)
+		company, ok2 := row[1].(string)
+		educationName, ok3 := row[2].(string)
+		educationDuration, ok4 := row[3].(string)
+		educationDate, ok5 := row[4].(string)
+		lang, ok6 := row[5].(string)
 
-		if ok1 && ok2 && ok3 && ok4 && ok5 && ok6 && ok7 {
+		if ok1 && ok2 && ok3 && ok4 && ok5 && ok6 {
 			r := models.Record{
-				FirstName:      firstName,
-				LastName:       lastName,
+				FullName:       fullName,
 				CompanyName:    company,
 				EducationName:  educationName,
 				EducationHours: educationDuration,
@@ -86,7 +84,7 @@ func (s SheetHandler) WriteToSheets(records []models.Record) error {
 		return fmt.Errorf("unable to retrieve Sheets client: %v", err)
 	}
 
-	res, err := srv.Spreadsheets.Values.Get(documentId, dbPageId+"!A:I").Do()
+	res, err := srv.Spreadsheets.Values.Get(documentId, dbPageId+"!A:G").Do()
 	if err != nil {
 		return err
 	}

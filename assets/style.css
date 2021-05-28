@@ -32,7 +32,7 @@ h4 {
 h1 {
     overflow-wrap: break-word;
     font-family: "YACgEYmuCJE 0", _fb_, auto;
-    font-size: 65.3333px;
+    font-size: 80.3333px;
     line-height: 1.2;
     letter-spacing: 0;
     font-weight: 400;
@@ -72,12 +72,13 @@ h6 {
     /* text-shadow: rgba(0, 0, 0, 0.094) 0px 0.824999px 1.254px; */
     text-align: center;
     font-family: "YACgEYmuCJE 0", _fb_, auto;
-    font-size: 26px;
+    font-size: 29px;
     line-height: 1.4em;
     letter-spacing: 0.01em;
     font-weight: 700;
     font-style: normal;
-    color: rgb(115, 115, 115);
+    /* color: rgb(115, 115, 115); */
+    color: rgb(33, 54, 101);
 }
 
 p {

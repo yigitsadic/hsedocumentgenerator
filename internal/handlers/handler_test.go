@@ -95,8 +95,7 @@ func TestHandler_ReadFromSheets(t *testing.T) {
 
 		mC.Output = []models.Record{
 			{
-				FirstName:       "Ali",
-				LastName:        "Veli",
+				FullName:        "Ali Veli",
 				CompanyName:     "Bir Şirket",
 				EducationDate:   "07.02.2012",
 				EducationName:   "Güvenli Sürüş",
@@ -201,7 +200,7 @@ func TestHandler_GeneratePDF(t *testing.T) {
 		h := Handler{Output: o}
 		h.PDFGenerator = mockPDFGenerator{}
 		h.Files = []models.ReadFile{}
-		r := models.Record{UniqueReference: "LOREM", FirstName: "Lorem", LastName: "Ipsum"}
+		r := models.Record{UniqueReference: "LOREM", FullName: "Lorem Ipsum"}
 
 		err := h.GeneratePDF(r)
 
@@ -219,7 +218,7 @@ func TestHandler_GeneratePDF(t *testing.T) {
 			t.Errorf("expected file name was=%s but got=%s", expectedFileName, h.Files[0].FileName)
 		}
 
-		expectedText := fmt.Sprintf(pdfGeneratedText, r.UniqueReference, r.FirstName, r.LastName)
+		expectedText := fmt.Sprintf(pdfGeneratedText, r.UniqueReference, r.FullName)
 
 		if !strings.Contains(o.String(), expectedText) {
 			t.Errorf("expected output not satisfied. expected=%q but got=%q", expectedText, o.String())
@@ -268,7 +267,7 @@ func TestHandler_Do(t *testing.T) {
 📗	Google Sheets üzerinden 2 kayıt okundu.
 🤔	Oluşturulan PDFleri içeren ZIP dosyası nereye depolanacak?:	⏳	PDF belge üretme işlemi başlandı...
 👍	[abc.pdf]	Lorem	Ipsum	için PDF belgesi üretildi.
-👍	[def.pdf]	Ali	Veli	için PDF belgesi üretildi.
+👍	[def.pdf]	Dolor Sit Amet	için PDF belgesi üretildi.
 ✅	PDF belgeleri "example.csv" olarak sıkıştırıldı ve okunan kayıtlar Google Sheets içine eklendi.
 💫	İşlem tamamlandı. İyi günler!
 `
@@ -278,13 +277,11 @@ func TestHandler_Do(t *testing.T) {
 
 		records := []models.Record{
 			{
-				FirstName:       "Lorem",
-				LastName:        "Ipsum",
+				FullName:        "Lorem Ipsum",
 				UniqueReference: "abc",
 			},
 			{
-				FirstName:       "Ali",
-				LastName:        "Veli",
+				FullName:        "Dolor Sit Amet",
 				UniqueReference: "def",
 			},
 		}
@@ -325,7 +322,7 @@ func TestHandler_Do(t *testing.T) {
 📗	Google Sheets üzerinden 2 kayıt okundu.
 🤔	Oluşturulan PDFleri içeren ZIP dosyası nereye depolanacak?:	⏳	PDF belge üretme işlemi başlandı...
 😥	[abc.pdf] Lorem Ipsum için beklenmedik bir hata oluştu.
-😥	[def.pdf] Ali Veli için beklenmedik bir hata oluştu.
+😥	[def.pdf] Dolor Sit amet için beklenmedik bir hata oluştu.
 🙈	Sıkıştırılacak PDF bulunamadı.`
 
 		expectedError := errors.New("hello expected error here")
@@ -333,13 +330,11 @@ func TestHandler_Do(t *testing.T) {
 		i := new(bytes.Buffer)
 		records := []models.Record{
 			{
-				FirstName:       "Lorem",
-				LastName:        "Ipsum",
+				FullName:        "Lorem Ipsum",
 				UniqueReference: "abc",
 			},
 			{
-				FirstName:       "Ali",
-				LastName:        "Veli",
+				FullName:        "Dolor Sit amet",
 				UniqueReference: "def",
 			},
 		}
