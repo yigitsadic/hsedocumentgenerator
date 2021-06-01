@@ -57,7 +57,7 @@ func (g *PDFGenerator) Build(req *gotenberg.HTMLRequest) ([]byte, error) {
 func (g *PDFGenerator) BuildRequest(r models.Record) (*gotenberg.HTMLRequest, error) {
 	htmlContent := new(bytes.Buffer)
 
-	trans := translations.TranslateTo(r.EducationHours, r.EducationDate, r.Language)
+	trans := translations.TranslateTo(r.EducationHours, r.EducationDateStart, r.EducationDateEnd, r.Language)
 	t := TemplateDto{
 		StateName:        trans.StateName,
 		CertificateTitle: trans.Title,

@@ -15,7 +15,7 @@ const (
 	pageId       = "Sertifika Yaratıcı"
 	dbPageId     = "Sertifika Veritabanı"
 	credFileName = "credentials.json"
-	pageRange    = "A:F"
+	pageRange    = "A:H"
 )
 
 type SheetHandler struct {
@@ -31,7 +31,7 @@ func (s SheetHandler) ReadFromSheets() ([]models.Record, error) {
 		return nil, fmt.Errorf("unable to retrieve Sheets client: %v", err)
 	}
 
-	readRange := fmt.Sprintf("%s!%s", pageId, pageRange)
+	readRange := fmt.Sprintf("%s!%s", pageId, "A:G")
 	resp, err := srv.Spreadsheets.Values.Get(documentId, readRange).Do()
 	if err != nil {
 		return nil, err
@@ -40,7 +40,7 @@ func (s SheetHandler) ReadFromSheets() ([]models.Record, error) {
 	var results []models.Record
 
 	for _, row := range resp.Values[1:] {
-		if len(row) < 6 {
+		if len(row) < 7 {
 			continue
 		}
 
@@ -48,17 +48,19 @@ func (s SheetHandler) ReadFromSheets() ([]models.Record, error) {
 		company, ok2 := row[1].(string)
 		educationName, ok3 := row[2].(string)
 		educationDuration, ok4 := row[3].(string)
-		educationDate, ok5 := row[4].(string)
-		lang, ok6 := row[5].(string)
+		educationDateStart, ok5 := row[4].(string)
+		educationDateEnd, ok6 := row[5].(string)
+		lang, ok7 := row[6].(string)
 
-		if ok1 && ok2 && ok3 && ok4 && ok5 && ok6 {
+		if ok1 && ok2 && ok3 && ok4 && ok5 && ok6 && ok7 {
 			r := models.Record{
-				FullName:       fullName,
-				CompanyName:    company,
-				EducationName:  educationName,
-				EducationHours: educationDuration,
-				EducationDate:  educationDate,
-				Language:       lang,
+				FullName:           fullName,
+				CompanyName:        company,
+				EducationName:      educationName,
+				EducationHours:     educationDuration,
+				EducationDateStart: educationDateStart,
+				EducationDateEnd:   educationDateEnd,
+				Language:           lang,
 			}
 			r.AssignUniqueReference()
 
@@ -84,7 +86,7 @@ func (s SheetHandler) WriteToSheets(records []models.Record) error {
 		return fmt.Errorf("unable to retrieve Sheets client: %v", err)
 	}
 
-	res, err := srv.Spreadsheets.Values.Get(documentId, dbPageId+"!A:G").Do()
+	res, err := srv.Spreadsheets.Values.Get(documentId, dbPageId+"!A:H").Do()
 	if err != nil {
 		return err
 	}

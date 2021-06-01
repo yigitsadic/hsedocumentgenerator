@@ -42,12 +42,13 @@ func TestRecord_GenerateQRCode(t *testing.T) {
 
 func TestRecord_FormatForSheets(t *testing.T) {
 	r := Record{
-		FullName:        "Yigit Sadicis",
-		CompanyName:     "Medya ve Toplum",
-		EducationDate:   "20.07.2022",
-		EducationName:   "Reklam ve YouTube",
-		EducationHours:  "96 saat",
-		UniqueReference: "ylq123-2eiQ",
+		FullName:           "Yigit Sadicis",
+		CompanyName:        "Medya ve Toplum",
+		EducationDateStart: "20.07.2022",
+		EducationDateEnd:   "25.07.2022",
+		EducationName:      "Reklam ve YouTube",
+		EducationHours:     "96 saat",
+		UniqueReference:    "ylq123-2eiQ",
 	}
 
 	got := r.FormatForSheets()
@@ -68,11 +69,15 @@ func TestRecord_FormatForSheets(t *testing.T) {
 		t.Errorf("expected value not satisfied")
 	}
 
-	if v, ok := got[4].(string); !ok || v != r.EducationDate {
+	if v, ok := got[4].(string); !ok || v != r.EducationDateStart {
 		t.Errorf("expected value not satisfied")
 	}
 
-	if v, ok := got[5].(string); !ok || v != r.UniqueReference {
+	if v, ok := got[5].(string); !ok || v != r.EducationDateEnd {
+		t.Errorf("expected value not satisfied")
+	}
+
+	if v, ok := got[6].(string); !ok || v != r.UniqueReference {
 		t.Errorf("expected value not satisfied")
 	}
 }

@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"fmt"
 	gonanoid "github.com/matoous/go-nanoid/v2"
 	"github.com/skip2/go-qrcode"
 	"time"
@@ -11,7 +12,10 @@ const (
 	charset = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz-"
 	length  = 17
 
-	baseURL        = "https://hsegroup.uz/kurumsal/certificate_verification?qr_code="
+	trBaseURL = "https://hsegroup.uz/kurumsal/sertifika-dogrulama/?qr_code=%s"
+	enBaseURL = "https://hsegroup.uz/en/corporate/certificate_verification?qr_code=%s"
+	ruBaseURL = "https://hsegroup.uz/ru/kurumsal/certificate_verification?qr_code=%s"
+
 	dateTimeFormat = "15:04, 02.01.2006"
 	location       = "Asia/Samarkand"
 )
@@ -21,13 +25,14 @@ var (
 )
 
 type Record struct {
-	FullName        string
-	CompanyName     string
-	EducationDate   string
-	EducationName   string
-	EducationHours  string
-	UniqueReference string
-	Language        string
+	FullName           string
+	CompanyName        string
+	EducationDateStart string
+	EducationDateEnd   string
+	EducationName      string
+	EducationHours     string
+	UniqueReference    string
+	Language           string
 }
 
 // Assigns unique nano id reference code to object.
@@ -47,7 +52,8 @@ func (r Record) FormatForSheets() []interface{} {
 		r.CompanyName,
 		r.EducationName,
 		r.EducationHours,
-		r.EducationDate,
+		r.EducationDateStart,
+		r.EducationDateEnd,
 		r.UniqueReference,
 		time.Now().In(l).Format(dateTimeFormat),
 	}
@@ -59,5 +65,15 @@ func (r Record) GenerateQRCode() ([]byte, error) {
 		return nil, UniqueReferenceMustPresentErr
 	}
 
-	return qrcode.Encode(baseURL+r.UniqueReference, qrcode.Medium, 100)
+	var baseText string
+	switch r.Language {
+	case "TR":
+		baseText = trBaseURL
+	case "EN":
+		baseText = enBaseURL
+	case "RU":
+		baseText = ruBaseURL
+	}
+
+	return qrcode.Encode(fmt.Sprintf(baseText, r.UniqueReference), qrcode.Medium, 100)
 }

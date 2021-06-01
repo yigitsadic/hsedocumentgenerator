@@ -95,12 +95,12 @@ func TestHandler_ReadFromSheets(t *testing.T) {
 
 		mC.Output = []models.Record{
 			{
-				FullName:        "Ali Veli",
-				CompanyName:     "Bir Şirket",
-				EducationDate:   "07.02.2012",
-				EducationName:   "Güvenli Sürüş",
-				EducationHours:  "22 saat",
-				UniqueReference: "ABCDEF",
+				FullName:           "Ali Veli",
+				CompanyName:        "Bir Şirket",
+				EducationDateStart: "07.02.2012",
+				EducationName:      "Güvenli Sürüş",
+				EducationHours:     "22 saat",
+				UniqueReference:    "ABCDEF",
 			},
 		}
 		mC.Error = nil
