@@ -212,13 +212,13 @@ func TestHandler_GeneratePDF(t *testing.T) {
 			t.Errorf("expected to file written into files")
 		}
 
-		expectedFileName := fmt.Sprintf("%s.pdf", r.UniqueReference)
+		expectedFileName := fmt.Sprintf("%s - %s.pdf", r.UniqueReference, r.FullName)
 
 		if h.Files[0].FileName != expectedFileName {
 			t.Errorf("expected file name was=%s but got=%s", expectedFileName, h.Files[0].FileName)
 		}
 
-		expectedText := fmt.Sprintf(pdfGeneratedText, r.UniqueReference, r.FullName)
+		expectedText := fmt.Sprintf(pdfGeneratedText, r.UniqueReference, r.FullName, r.FullName)
 
 		if !strings.Contains(o.String(), expectedText) {
 			t.Errorf("expected output not satisfied. expected=%q but got=%q", expectedText, o.String())
@@ -266,8 +266,8 @@ func TestHandler_Do(t *testing.T) {
 		expectedOutput := `🚀	Google Sheets üzerinden okuma başlatıldı.
 📗	Google Sheets üzerinden 2 kayıt okundu.
 🤔	Oluşturulan PDFleri içeren ZIP dosyası nereye depolanacak?:	⏳	PDF belge üretme işlemi başlandı...
-👍	[abc.pdf]	Lorem	Ipsum	için PDF belgesi üretildi.
-👍	[def.pdf]	Dolor Sit Amet	için PDF belgesi üretildi.
+👍	[abc - Lorem Ipsum.pdf]	Lorem Ipsum	için PDF belgesi üretildi.
+👍	[def - Dolor Sit Amet.pdf]	Dolor Sit Amet	için PDF belgesi üretildi.
 ✅	PDF belgeleri "example.csv" olarak sıkıştırıldı ve okunan kayıtlar Google Sheets içine eklendi.
 💫	İşlem tamamlandı. İyi günler!
 `
@@ -293,6 +293,8 @@ func TestHandler_Do(t *testing.T) {
 		h.Do()
 
 		if !strings.Contains(o.String(), expectedOutput) {
+			fmt.Println(o.String())
+
 			t.Errorf("expected output not satisfied")
 		}
 	})
@@ -321,8 +323,8 @@ func TestHandler_Do(t *testing.T) {
 		expectedOutput := `🚀	Google Sheets üzerinden okuma başlatıldı.
 📗	Google Sheets üzerinden 2 kayıt okundu.
 🤔	Oluşturulan PDFleri içeren ZIP dosyası nereye depolanacak?:	⏳	PDF belge üretme işlemi başlandı...
-😥	[abc.pdf] Lorem Ipsum için beklenmedik bir hata oluştu.
-😥	[def.pdf] Dolor Sit amet için beklenmedik bir hata oluştu.
+😥	[abc - Lorem Ipsum.pdf] Lorem Ipsum için beklenmedik bir hata oluştu.
+😥	[def - Dolor Sit amet.pdf] Dolor Sit amet için beklenmedik bir hata oluştu.
 🙈	Sıkıştırılacak PDF bulunamadı.`
 
 		expectedError := errors.New("hello expected error here")
