@@ -9,12 +9,12 @@ import (
 )
 
 const (
-	charset = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz-"
+	charset = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 	length  = 17
 
 	trBaseURL = "https://hsegroup.uz/kurumsal/sertifika-dogrulama/?qr_code=%s"
 	enBaseURL = "https://hsegroup.uz/en/corporate/certificate_verification?qr_code=%s"
-	ruBaseURL = "https://hsegroup.uz/ru/kurumsal/certificate_verification?qr_code=%s"
+	ruBaseURL = "https://hsegroup.uz/ru/korporativnyy/podtverzhdeniya-sertifikata/?qr_code=%s"
 
 	dateTimeFormat = "15:04, 02.01.2006"
 	location       = "Asia/Samarkand"

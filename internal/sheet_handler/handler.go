@@ -15,7 +15,6 @@ const (
 	pageId       = "Sertifika Yaratıcı"
 	dbPageId     = "Sertifika Veritabanı"
 	credFileName = "credentials.json"
-	pageRange    = "A:H"
 )
 
 type SheetHandler struct {
